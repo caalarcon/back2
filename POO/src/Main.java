@@ -1,11 +1,11 @@
-//TIP To <b>Run</b> code, press <shortcut actionId="Run"/> or
-// click the <icon src="AllIcons.Actions.Execute"/> icon in the gutter.
-public class Main {
-    public static void main(String[] args) {
-        try {
-            int resultado = 10 / 0;
-        } catch (ArithmeticException e) {
-            System.out.println("Erro: divisão por zero!");
-        }
+import java.io.IOException;
+
+void main() throws IOException {
+    ContaBancaria conta = new ContaBancaria(100);
+
+    try {
+        conta.sacar(150);
+    } catch (SaldoInsuficienteException e) {
+        System.out.println(e.getMessage());
     }
 }
