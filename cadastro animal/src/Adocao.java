@@ -2,7 +2,6 @@ public class Adocao {
 
     private String nome;
     private int idade;
-    private String tipo;
     private String raca;
     private String endereco;
     private String telefone;
@@ -21,14 +20,6 @@ public class Adocao {
 
     public void setIdade(int idade) {
         this.idade = idade;
-    }
-
-    public String getTipo() {
-        return tipo;
-    }
-
-    public void setTipo(String tipo) {
-        this.tipo = tipo;
     }
 
     public String getRaca() {

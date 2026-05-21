@@ -2,128 +2,86 @@ import javax.swing.*;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 
-public class Main {
+//TIP To <b>Run</b> code, press <shortcut actionId="Run"/> or
+// click the <icon src="AllIcons.Actions.Execute"/> icon in the gutter.
+void main() {
+    JFrame tela = new JFrame("Tela de Cadastro");
+    tela.setSize(500, 500);
+    tela.setLayout(null);
 
-    public static void main(String[] args) {
+    JLabel labelNome = new JLabel("Nome");
+    labelNome.setBounds(20, 20, 150, 20);
+    tela.add(labelNome);
 
-        JFrame tela = new JFrame("Cadastro de Doação");
-        tela.setSize(600, 600);
-        tela.setLayout(null);
+    JTextField nome = new JTextField();
+    nome.setBounds(20, 45, 250, 30);
+    tela.add(nome);
 
+    JLabel labelIdade = new JLabel("Idade");
+    labelIdade.setBounds(20, 85, 150, 20);
+    tela.add(labelIdade);
 
-        JLabel labelNome = new JLabel("Nome");
-        labelNome.setBounds(20, 20, 150, 40);
-        tela.add(labelNome);
+    JTextField idade = new JTextField();
+    idade.setBounds(20, 110, 250, 30);
+    tela.add(idade);
 
-        JTextField nome = new JTextField();
-        nome.setBounds(20, 50, 250, 40);
-        tela.add(nome);
+    JLabel labelTipo = new JLabel("Tipo");
+    labelTipo.setBounds(20, 150, 150, 20);
+    tela.add(labelTipo);
 
+    JComboBox<Tipo> racaInput = new JComboBox(Tipo.values());
+    racaInput.setBounds(20, 175, 250, 30);
+    tela.add(racaInput);
 
-        JLabel labelIdade = new JLabel("Idade");
-        labelIdade.setBounds(20, 100, 150, 40);
-        tela.add(labelIdade);
+    JLabel labelRaca = new JLabel("Ra�a");
+    labelRaca.setBounds(20, 215, 150, 20);
+    tela.add(labelRaca);
 
-        JTextField idade = new JTextField();
-        idade.setBounds(20, 130, 250, 40);
-        tela.add(idade);
+    JTextField raca = new JTextField();
+    raca.setBounds(20, 240, 250, 30);
+    tela.add(raca);
 
+    JLabel labelEndereco = new JLabel("Endere�o");
+    labelEndereco.setBounds(20, 280, 150, 20);
+    tela.add(labelEndereco);
 
-        JLabel labelTipo = new JLabel("Tipo");
-        labelTipo.setBounds(20, 180, 150, 40);
-        tela.add(labelTipo);
+    JTextField endereco = new JTextField();
+    endereco.setBounds(20, 305, 250, 30);
+    tela.add(endereco);
 
-        String[] tipos = {
-                "Cachorro",
-                "Gato",
-                "Papagaio",
-                "Chinchila"
-        };
-
-        JComboBox tipo = new JComboBox(tipos);
-        tipo.setBounds(20, 210, 250, 40);
-        tela.add(tipo);
-
-
-        JLabel labelRaca = new JLabel("Raça");
-        labelRaca.setBounds(20, 260, 150, 40);
-        tela.add(labelRaca);
-
-        JTextField raca = new JTextField();
-        raca.setBounds(20, 290, 250, 40);
-        tela.add(raca);
-
-
-        JLabel labelEndereco = new JLabel("Endereço");
-        labelEndereco.setBounds(20, 340, 150, 40);
-        tela.add(labelEndereco);
-
-        JTextField endereco = new JTextField();
-        endereco.setBounds(20, 370, 250, 40);
-        tela.add(endereco);
+    JButton enviar = new JButton("Enviar");
+    enviar.setBounds(80, 360, 150, 40);
+    tela.add(enviar);
 
 
-        JLabel labelTelefone = new JLabel("Telefone");
-        labelTelefone.setBounds(20, 420, 150, 40);
-        tela.add(labelTelefone);
+    Adocao adocao = new Adocao();
 
-        JTextField telefone = new JTextField();
-        telefone.setBounds(20, 450, 250, 40);
-        tela.add(telefone);
+    enviar.addActionListener(e ->{
+        String sql = "INSERT INTO animal(nome,idade,tipo,raca,endereco) VALUES (?,?,?,?,?)";
+        String nomeAnimal = nome.getText();
+        String idadeAnimal = idade.getText();
+        String tipo = racaInput.getSelectedItem().toString();
+        String racaAnimal = raca.getText();
+        String enderecoAdocao = endereco.getText();
+        try {
+            Connection conexao = Conexao.conectar();
+            PreparedStatement ps = conexao.prepareStatement(sql);
 
+            ps.setString(1 ,nomeAnimal);
+            ps.setString(2 ,idadeAnimal);
+            ps.setString(3,tipo);
+            ps.setString(4,racaAnimal);
+            ps.setString(5,enderecoAdocao);
+            ps.executeUpdate();
 
-        JButton cadastrar = new JButton("Cadastrar");
-        cadastrar.setBounds(320, 210, 150, 40);
-        tela.add(cadastrar);
+            JOptionPane.showMessageDialog(null,"salvo com sucesso");
+            ps.close();
+            conexao.close();
 
-        cadastrar.addActionListener(e -> {
+        } catch (Exception ex) {
+            throw new RuntimeException(ex);
+        }        });
 
-            String sql = "INSERT INTO doacao(nome, idade, tipo, raca, endereco, telefone) VALUES (?,?,?,?,?,?)";
-
-            String nomeAnimal = nome.getText();
-            String idadeAnimal = idade.getText();
-            String tipoAnimal = tipo.getSelectedItem().toString();
-            String racaAnimal = raca.getText();
-            String enderecoPessoa = endereco.getText();
-            String telefonePessoa = telefone.getText();
-
-            try {
-
-                Connection conexao = Conexao.conectar();
-
-                if (conexao == null) {
-
-                    JOptionPane.showMessageDialog(null, "Erro na conexão com o banco!");
-                    return;
-
-                }
-
-                PreparedStatement ps = conexao.prepareStatement(sql);
-
-                ps.setString(1, nomeAnimal);
-                ps.setString(2, idadeAnimal);
-                ps.setString(3, tipoAnimal);
-                ps.setString(4, racaAnimal);
-                ps.setString(5, enderecoPessoa);
-                ps.setString(6, telefonePessoa);
-
-                ps.executeUpdate();
-
-                conexao.close();
-                ps.close();
-
-                JOptionPane.showMessageDialog(null, "Cadastro realizado com sucesso!");
-
-            } catch (Exception ex) {
-
-                JOptionPane.showMessageDialog(null, "Erro ao cadastrar!");
-
-            }
-
-        });
-
-        tela.setVisible(true);
-
-    }
+    tela.setVisible(true);
 
 }
