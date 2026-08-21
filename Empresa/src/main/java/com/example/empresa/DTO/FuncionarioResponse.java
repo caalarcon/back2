@@ -16,7 +16,7 @@ public class FuncionarioResponse {
     public FuncionarioResponse() {
     }
 
-    // Construtor que transforma uma entidade Funcionario em uma resposta.
+    // Construtor que transforma o Funcionario em uma resposta.
     public FuncionarioResponse(Funcionario funcionario) {
         this.matricula = funcionario.getMatricula();
         this.nome = funcionario.getNome();

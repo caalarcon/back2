@@ -19,7 +19,7 @@ public class Funcionario {
     private LocalDate dtAdimicao;
     private Double salario;
 
-    // Construtor vazio, cria os objetos da entidade.
+    // Construtor vazio que cria os objetos da entidade.
     public Funcionario() {
     }
 
